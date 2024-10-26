@@ -92,7 +92,8 @@ fun PlayScreen(modifier: Modifier = Modifier, screenState: PlayScreenState) {
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.description),
-                    contentDescription = "description"
+                    contentDescription = "description",
+                    modifier = Modifier.size(60.dp),
                 )
             }
         }
