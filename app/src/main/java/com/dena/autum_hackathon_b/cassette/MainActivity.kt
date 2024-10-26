@@ -14,6 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.dena.autum_hackathon_b.cassette.feature.create.CreateScreenHost
+import com.dena.autum_hackathon_b.cassette.feature.create.CreateScreenState
 import com.dena.autum_hackathon_b.cassette.feature.play.PlayScreen
 import com.dena.autum_hackathon_b.cassette.feature.play.PlayScreenHost
 import com.dena.autum_hackathon_b.cassette.ui.theme.CassetteTheme
@@ -27,9 +29,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             CassetteTheme {
-                NavHost(navController = navController, startDestination = "play") {
+                NavHost(navController = navController, startDestination = "create") {
                     composable(route = "play") {
                         PlayScreenHost()
+                    }
+
+                    composable(route = "create") {
+                        CreateScreenHost()
                     }
                 }
             }
