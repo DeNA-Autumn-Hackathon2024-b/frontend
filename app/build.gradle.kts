@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -38,6 +39,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -51,7 +53,12 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    implementation(libs.timber)
     implementation(libs.navigation.compose)
+    implementation(libs.retrofit)
+    implementation(libs.okhttp.logging.intercepter)
+    implementation(libs.retrofit.converter.serialization)
+    implementation(libs.kotlin.serialization)
 
     implementation(libs.hilt.android)
     ksp(libs.dagger.compiler)
