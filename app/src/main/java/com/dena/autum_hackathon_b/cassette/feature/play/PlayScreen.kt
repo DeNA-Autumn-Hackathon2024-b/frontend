@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.BottomAppBar
@@ -17,6 +19,8 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -60,96 +64,87 @@ fun PlayScreen(modifier: Modifier = Modifier, screenState: PlayScreenState) {
         modifier = Modifier.fillMaxSize(),
         topBar = {
             CenterAlignedTopAppBar(
-            title = {Text("App_name")},
-            modifier = Modifier,
+                title = { Text(
+                    text = "cassette_name",
+                    modifier = Modifier.fillMaxWidth(),
+                    fontSize = 24.sp,
+                    fontStyle = FontStyle.Italic,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                ) },
+                actions = { IconButton(
+                    onClick = {}
+                ) {
+                    Icon(Icons.Default.Add, "Create_screen")
+                }
+                }
             )
         },
-        bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {/*TODO:ここでPlay_screenへのナビゲーション行う*/},
-                    icon = { Icon(
-                        painter = painterResource(id = R.drawable.music_note),
-                        contentDescription = "play"
-                        ) },
-                    modifier = Modifier,
-                    label = {Text("Play")},
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {/*TODO:ここでCreate_screenへのナビゲーション行う*/},
-                    icon = {Icon(Icons.Default.Edit, "create")},
-                    modifier = Modifier,
-                    label = {Text("Create")},
-                    )
-            }
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {/* TODO: 後でセトリの表示 */},
-                modifier = Modifier,
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.description),
-                    contentDescription = "description",
-                    modifier = Modifier.size(60.dp),
-                )
-            }
-        }
     ) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding)
                 .padding(top = 40.dp)
+                .fillMaxSize()
         ) {
-            Text(
-                text = "cassette_name",
-                modifier = Modifier.fillMaxWidth(),
-                fontSize = 24.sp,
-                fontStyle = FontStyle.Italic,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-            )
+            /*
             Text(
                 text = "created_at",
                 modifier = Modifier.fillMaxWidth(),
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
             )
+             */
             Image(
                 painter = painterResource(id = R.drawable.cassette_image),
                 contentDescription = "Figure Image",
                 modifier = Modifier
-                    .fillMaxWidth() // 必要に応じてサイズを指定
+                    .fillMaxWidth()
+                    .weight(1f)
                     .padding(top = 16.dp, bottom = 30.dp)
             )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround,
-            ){
-                Icon(
-                    painter = painterResource(id = R.drawable.fast_rewind),
-                    contentDescription = "rewind",
-                    modifier = Modifier.size(60.dp),
-                )
-                Icon(
-                    Icons.Default.PlayArrow,
-                    "play",
-                    modifier = Modifier.size(60.dp),
-                    )
-                Icon(
-                    painter = painterResource(id = R.drawable.fast_forward),
-                    contentDescription = "forward",
-                    modifier = Modifier.size(60.dp),
-                )
-            }
+
             Text(
                 text = "time",
                 modifier = Modifier.fillMaxWidth()
+                    .weight(0.2f)
                     .padding(top = 20.dp),
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
             )
+
+            Row(
+                modifier = Modifier.fillMaxWidth()
+                    .weight(0.3f),
+                horizontalArrangement = Arrangement.SpaceAround,
+            ){
+                IconButton(
+                    onClick = { /* TODO: 巻き戻しボタンの挙動*/ }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.fast_rewind),
+                        contentDescription = "rewind",
+                        modifier = Modifier.size(60.dp),
+                    )
+                }
+                IconButton(
+                    onClick = { /* TODO: 再生ボタンの挙動*/ }
+                ) {
+                    Icon(
+                        Icons.Default.PlayArrow,
+                        "play",
+                        modifier = Modifier.size(60.dp),
+                    )
+                }
+                IconButton(
+                    onClick = { /* TODO: 早送りボタンの挙動*/ }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.fast_forward),
+                        contentDescription = "forward",
+                        modifier = Modifier.size(60.dp),
+                    )
+                }
+            }
         }
     }
 }
