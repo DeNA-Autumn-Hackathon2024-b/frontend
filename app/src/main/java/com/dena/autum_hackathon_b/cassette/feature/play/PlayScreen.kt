@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dena.autum_hackathon_b.cassette.R
 import androidx.media3.exoplayer.ExoPlayer
+import com.dena.autum_hackathon_b.cassette.feature.play.flipping.FlippingCassetteImage
 import com.dena.autum_hackathon_b.cassette.ui.theme.CassetteTheme
 
 @Composable
@@ -96,9 +97,8 @@ fun PlayScreen(modifier: Modifier = Modifier, screenState: PlayScreenState) {
                 textAlign = TextAlign.Center,
             )
              */
-            Image(
-                painter = painterResource(id = R.drawable.cassette_image),
-                contentDescription = "Figure Image",
+            // フリップ可能なカセット画像を表示
+            FlippingCassetteImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
