@@ -18,6 +18,7 @@ import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.source.MediaSource
 import android.content.Context
 import androidx.annotation.OptIn
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 
@@ -51,12 +52,12 @@ class PlayScreenState
             Song.AddedSong(
                 duration = "0:30",
                 name = "希望の光",
-                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/original.mp3"
+                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/4ead1714-a222-491e-bd73-c771481f7585/original.mp3"
             ),
             Song.AddedSong(
                 duration = "1:30",
                 name = "星降る夜のメロディ",
-                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/original.mp3"
+                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/9493b5d5-80a2-43ca-8755-1614764e6bd1/original.mp3"
             ),
         )
 
@@ -84,16 +85,31 @@ class PlayScreenState
         return HlsMediaSource.Factory(dataSourceFactory)
             .createMediaSource(MediaItem.fromUri(Uri.parse(url)))
     }
-
      */
-
 
     init {
         if (songs.isNotEmpty()) {
-            val firstSong = songs[0] as Song.AddedSong
-            val mediaSource = buildMediaSource(firstSong.audioFileUrl)
-            exoPlayer.setMediaSource(mediaSource)
+            val mediaItems = songs.filterIsInstance<Song.AddedSong>().map { song ->
+                MediaItem.fromUri(Uri.parse(song.audioFileUrl))
+            }
+            exoPlayer.setMediaItems(mediaItems)
             exoPlayer.prepare()
+
+            exoPlayer.addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(state: Int) {
+                    when (state) {
+                        Player.STATE_READY -> {
+                            println("ExoPlayer is ready and seekable: ${exoPlayer.isCurrentWindowSeekable}")
+                        }
+                        Player.STATE_BUFFERING -> {
+                            println("ExoPlayer is buffering")
+                        }
+                        Player.STATE_ENDED -> {
+                            println("Playback ended")
+                        }
+                    }
+                }
+            })
         }
     }
 }
