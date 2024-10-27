@@ -1,5 +1,6 @@
 package com.dena.autum_hackathon_b.cassette.feature.play
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
@@ -188,28 +190,36 @@ fun RewindButton(exoPlayer: ExoPlayer) {
     val coroutineScope = rememberCoroutineScope()
     var rewindJob by remember { mutableStateOf<Job?>(null) }
 
-    IconButton(
-        onClick = {},
-        modifier = Modifier.pointerInput(Unit) {
-            detectTapGestures(
-                onPress = {
-                    rewindJob = coroutineScope.launch {
-                        while (isActive) {
-                            val currentPosition = exoPlayer.currentPosition
-                            exoPlayer.seekTo((currentPosition - 5000).coerceAtLeast(0))
-                            delay(200)
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(60.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onPress = {
+                        Log.d("PlayScreen", "Rewind button pressed")
+                        rewindJob = coroutineScope.launch {
+                            Log.d("PlayScreen", "Rewind started")
+                            while (isActive) {
+                                val currentPosition = exoPlayer.currentPosition
+                                val newPosition = (currentPosition - 1000).coerceAtLeast(0) // 1秒巻き戻し
+                                exoPlayer.seekTo(newPosition)
+                                Log.d("PlayScreen", "Rewinding to: $newPosition")
+                                delay(500) // 0.5秒ごとに1秒巻き戻し
+                            }
+                            Log.d("PlayScreen", "Rewind stopped")
                         }
+                        tryAwaitRelease()
+                        rewindJob?.cancel()
+                        Log.d("PlayScreen", "Rewind job cancelled")
                     }
-                    tryAwaitRelease()
-                    rewindJob?.cancel()
-                }
-            )
-        }
+                )
+            }
     ) {
         Icon(
             painter = painterResource(id = R.drawable.fast_rewind),
             contentDescription = "rewind",
-            modifier = Modifier.size(60.dp),
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }
@@ -219,29 +229,37 @@ fun FastForwardButton(exoPlayer: ExoPlayer) {
     val coroutineScope = rememberCoroutineScope()
     var fastForwardJob by remember { mutableStateOf<Job?>(null) }
 
-    IconButton(
-        onClick = {},
-        modifier = Modifier.pointerInput(Unit) {
-            detectTapGestures(
-                onPress = {
-                    fastForwardJob = coroutineScope.launch {
-                        while (isActive) {
-                            val currentPosition = exoPlayer.currentPosition
-                            val duration = exoPlayer.duration
-                            exoPlayer.seekTo((currentPosition + 5000).coerceAtMost(duration))
-                            delay(200)
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(60.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onPress = {
+                        Log.d("PlayScreen", "FastForward button pressed")
+                        fastForwardJob = coroutineScope.launch {
+                            Log.d("PlayScreen", "FastForward started")
+                            while (isActive) {
+                                val currentPosition = exoPlayer.currentPosition
+                                val duration = exoPlayer.duration
+                                val newPosition = (currentPosition + 1000).coerceAtMost(duration) // 1秒早送り
+                                exoPlayer.seekTo(newPosition)
+                                Log.d("PlayScreen", "FastForwarding to: $newPosition")
+                                delay(500) // 0.5秒ごとに1秒早送り
+                            }
+                            Log.d("PlayScreen", "FastForward stopped")
                         }
+                        tryAwaitRelease()
+                        fastForwardJob?.cancel()
+                        Log.d("PlayScreen", "FastForward job cancelled")
                     }
-                    tryAwaitRelease()
-                    fastForwardJob?.cancel()
-                }
-            )
-        }
+                )
+            }
     ) {
         Icon(
             painter = painterResource(id = R.drawable.fast_forward),
             contentDescription = "forward",
-            modifier = Modifier.size(60.dp),
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }
