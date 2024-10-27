@@ -66,25 +66,29 @@ fun PlayScreen(modifier: Modifier = Modifier, screenState: PlayScreenState) {
         modifier = Modifier.fillMaxSize(),
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(
-                    text = "cassette_name",
-                    modifier = Modifier.fillMaxWidth(),
-                    fontSize = 24.sp,
-                    fontStyle = FontStyle.Italic,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                ) },
-                actions = { IconButton(
-                    onClick = {}
-                ) {
-                    Icon(Icons.Default.Add, "Create_screen")
-                }
+                title = {
+                    Text(
+                        text = "cassette_name",
+                        modifier = Modifier.fillMaxWidth(),
+                        fontSize = 24.sp,
+                        fontStyle = FontStyle.Italic,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                    )
+                },
+                actions = {
+                    IconButton(
+                        onClick = {}
+                    ) {
+                        Icon(Icons.Default.Add, "Create_screen")
+                    }
                 }
             )
         },
     ) { innerPadding ->
         Column(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
                 .padding(top = 40.dp)
                 .fillMaxSize()
         ) {
@@ -107,7 +111,8 @@ fun PlayScreen(modifier: Modifier = Modifier, screenState: PlayScreenState) {
 
             Text(
                 text = "time",
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .weight(0.2f)
                     .padding(top = 20.dp),
                 fontSize = 20.sp,
@@ -115,10 +120,11 @@ fun PlayScreen(modifier: Modifier = Modifier, screenState: PlayScreenState) {
             )
 
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .weight(0.3f),
                 horizontalArrangement = Arrangement.SpaceAround,
-            ){
+            ) {
                 IconButton(
                     onClick = { /* TODO: 巻き戻しボタンの挙動*/ }
                 ) {
