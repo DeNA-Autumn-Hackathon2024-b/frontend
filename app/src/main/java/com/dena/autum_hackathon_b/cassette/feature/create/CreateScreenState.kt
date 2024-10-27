@@ -18,7 +18,7 @@ sealed interface Song {
 }
 
 @Stable
-class CreateScreenState(private val uiState: State<UiState>) {
+class CreateScreenState(val uiState: State<UiState>) {
     var cassetteName: String by mutableStateOf("")
         private set
 

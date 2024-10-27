@@ -11,7 +11,14 @@ import java.io.File
 
 interface CassetteRepository {
     suspend fun getCassette(id: String): Cassette
-    suspend fun uploadAudio(audioFile: File, mimeType: String)
+    suspend fun uploadAudio(
+        audioFile: File,
+        mimeType: String,
+        name: String,
+        durationSec: Int,
+        number: Int
+    ): String
+
     suspend fun cacheAudio(audioUri: Uri): CachedAudioFile
 }
 

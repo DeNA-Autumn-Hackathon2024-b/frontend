@@ -53,5 +53,5 @@ object RetrofitModule {
             .build()
     }
 
-    private const val BASE_URL = "https://example.com/"
+    private const val BASE_URL = "http://3.107.85.184:8080/"
 }
