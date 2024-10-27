@@ -216,14 +216,13 @@ fun CreateScreen(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(400.dp)
+                        .height(200.dp)
                         .padding(16.dp),
                 ) {
 
                     Column(modifier = Modifier.padding(8.dp)) {
-                        Text(text = "アップロード完了しました！以下のURLを共有してください！")
+                        Text(text = "アップロード完了しました！")
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "$url")
 
                         Spacer(modifier = Modifier.weight(1f))
 
