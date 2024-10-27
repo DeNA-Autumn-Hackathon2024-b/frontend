@@ -3,6 +3,7 @@ package com.dena.autum_hackathon_b.cassette.feature.play
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -81,9 +82,12 @@ fun PlayScreen(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             CenterAlignedTopAppBar(
+                navigationIcon = {
+                    Box(modifier = Modifier.size(32.dp))
+                },
                 title = {
                     Text(
-                        text = "cassette_name",
+                        text = "リラックス",
                         modifier = Modifier.fillMaxWidth(),
                         fontSize = 24.sp,
                         fontStyle = FontStyle.Italic,
