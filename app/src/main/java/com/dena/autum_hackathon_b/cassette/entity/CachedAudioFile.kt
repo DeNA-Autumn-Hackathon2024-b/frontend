@@ -6,5 +6,5 @@ import java.io.Serializable
 data class CachedAudioFile(
     val audioFile: File,
     val mimeType: String,
-    val fileName: String
+    val fileName: String,
 ) : Serializable

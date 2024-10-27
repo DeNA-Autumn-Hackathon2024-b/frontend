@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,7 +19,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -42,7 +47,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.media3.extractor.metadata.scte35.SpliceCommand
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.dena.autum_hackathon_b.cassette.R
@@ -80,8 +87,12 @@ fun CreateScreenHost(
         modifier = modifier,
         screenState = screenState,
         onClickAddSong = navigateToAddSongDialog,
-        onClickBack = navigateBack
+        onClickBack = navigateBack,
+        onClickUploadButton = {
+            screenViewModel.uploadSongs()
+        }
     )
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,7 +101,8 @@ fun CreateScreen(
     modifier: Modifier = Modifier,
     screenState: CreateScreenState,
     onClickAddSong: () -> Unit,
-    onClickBack: () -> Unit
+    onClickBack: () -> Unit,
+    onClickUploadButton: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
@@ -118,7 +130,7 @@ fun CreateScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
+            FloatingActionButton(onClick = onClickUploadButton) {
                 Icon(
                     painter = painterResource(R.drawable.ic_send_gray_24dp),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -184,6 +196,45 @@ fun CreateScreen(
                 }
             }
         }
+
+        if (screenState.uiState.value.loading) {
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        val url = screenState.uiState.value.url
+        if (url != null) {
+            Dialog(
+                onDismissRequest = onClickBack,
+            ) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(400.dp)
+                        .padding(16.dp),
+                ) {
+
+                    Column(modifier = Modifier.padding(8.dp)) {
+                        Text(text = "アップロード完了しました！以下のURLを共有してください！")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "$url")
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            Button(onClick = onClickBack) { Text(text = "ok") }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -232,6 +283,8 @@ private fun PreviewCreateScreen() {
         CreateScreen(
             screenState = CreateScreenState(screenState),
             onClickAddSong = {},
-            onClickBack = {})
+            onClickBack = {},
+            onClickUploadButton = {}
+        )
     }
 }

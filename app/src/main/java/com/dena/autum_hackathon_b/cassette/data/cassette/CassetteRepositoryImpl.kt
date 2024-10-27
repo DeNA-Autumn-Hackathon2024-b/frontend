@@ -23,8 +23,14 @@ class CassetteRepositoryImpl @Inject constructor(
         return Cassette(id = id)
     }
 
-    override suspend fun uploadAudio(audioFile: File, mimeType: String) {
-        cassetteRestApi.uploadAudioFile(audioFile, mimeType)
+    override suspend fun uploadAudio(
+        audioFile: File,
+        mimeType: String,
+        name: String,
+        durationSec: Int,
+        number: Int
+    ): String {
+        return cassetteRestApi.uploadAudioFile(audioFile, mimeType, name, durationSec, number)
     }
 
     override suspend fun cacheAudio(audioUri: Uri): CachedAudioFile {
@@ -50,7 +56,7 @@ class CassetteRepositoryImpl @Inject constructor(
         }
 
         return CachedAudioFile(
-            audioFile =  cacheFile,
+            audioFile = cacheFile,
             mimeType = mimeType,
             fileName = fileName
         )
