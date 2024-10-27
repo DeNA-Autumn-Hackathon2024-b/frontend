@@ -4,9 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,8 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dena.autum_hackathon_b.cassette.feature.create.CreateScreenHost
-import com.dena.autum_hackathon_b.cassette.feature.create.CreateScreenState
-import com.dena.autum_hackathon_b.cassette.feature.play.PlayScreen
+import com.dena.autum_hackathon_b.cassette.feature.create.addsong.AddSongDialogScreenHost
 import com.dena.autum_hackathon_b.cassette.feature.play.PlayScreenHost
 import com.dena.autum_hackathon_b.cassette.ui.theme.CassetteTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,9 +34,28 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable(route = "create") {
+                    composable(route = "create") { currentNavBackstackEntry ->
                         CreateScreenHost(
+                            navController = navController,
+                            navigateToAddSongDialog = {
+                                navController.navigate("addsong")
+                            },
                             navigateBack = {
+                                navController.popBackStack()
+                            }
+                        )
+                    }
+
+                    composable(route = "addsong") {
+                        AddSongDialogScreenHost(
+                            onSuccess = { cachedAudioFile, songText ->
+                                navController.previousBackStackEntry?.run {
+                                    savedStateHandle["cachedAudioFile"] = cachedAudioFile
+                                    savedStateHandle["songText"] = songText
+                                }
+                                navController.popBackStack()
+                            },
+                            onCancel = {
                                 navController.popBackStack()
                             }
                         )
