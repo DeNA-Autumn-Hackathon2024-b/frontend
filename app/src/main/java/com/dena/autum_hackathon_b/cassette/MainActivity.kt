@@ -29,13 +29,21 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             CassetteTheme {
-                NavHost(navController = navController, startDestination = "create") {
+                NavHost(navController = navController, startDestination = "play") {
                     composable(route = "play") {
-                        PlayScreenHost()
+                        PlayScreenHost(
+                            navigateToCreateScreen = {
+                                navController.navigate("create")
+                            }
+                        )
                     }
 
                     composable(route = "create") {
-                        CreateScreenHost()
+                        CreateScreenHost(
+                            navigateBack = {
+                                navController.popBackStack()
+                            }
+                        )
                     }
                 }
             }
