@@ -236,22 +236,9 @@ fun FastForwardButton(exoPlayer: ExoPlayer) {
             .pointerInput(Unit) {
                 detectTapGestures(
                     onPress = {
-                        Log.d("PlayScreen", "FastForward button pressed")
-                        fastForwardJob = coroutineScope.launch {
-                            Log.d("PlayScreen", "FastForward started")
-                            while (isActive) {
-                                val currentPosition = exoPlayer.currentPosition
-                                val duration = exoPlayer.duration
-                                val newPosition = (currentPosition + 1000).coerceAtMost(duration) // 1秒早送り
-                                exoPlayer.seekTo(newPosition)
-                                Log.d("PlayScreen", "FastForwarding to: $newPosition")
-                                delay(500) // 0.5秒ごとに1秒早送り
-                            }
-                            Log.d("PlayScreen", "FastForward stopped")
-                        }
+                        exoPlayer.setPlaybackSpeed(2f)
                         tryAwaitRelease()
-                        fastForwardJob?.cancel()
-                        Log.d("PlayScreen", "FastForward job cancelled")
+                        exoPlayer.setPlaybackSpeed(1f)
                     }
                 )
             }
