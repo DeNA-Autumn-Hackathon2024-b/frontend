@@ -96,7 +96,6 @@ fun PlayScreen(modifier: Modifier = Modifier, screenState: PlayScreenState) {
             Text(
                 text = "created_at",
                 modifier = Modifier.fillMaxWidth(),
-                
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
             )
