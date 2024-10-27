@@ -141,17 +141,36 @@ fun CreateScreen(modifier: Modifier = Modifier, screenState: CreateScreenState) 
             }
 
             itemsIndexed(screenState.songs) { index, song ->
-                when (song) {
-                    Song.AddSong -> AddSongRow(onClick = {})
-                    is Song.AddedSong -> AddedSongRow(
-                        index = index,
-                        size = screenState.songs.size,
-                        song = song
-                    )
-                }
+                Box(
+                    modifier = Modifier
+                        .clip(
+                            shape = when (index) {
+                                0 -> RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
+                                screenState.songs.size - 1 -> RoundedCornerShape(
+                                    bottomStart = 8.dp,
+                                    bottomEnd = 8.dp
+                                )
 
-                if (index != screenState.songs.size - 1) {
-                    HorizontalDivider(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                else -> RectangleShape
+                            }
+                        )
+                        .background(color = MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    when (song) {
+                        Song.AddSong -> AddSongRow(onClick = {})
+                        is Song.AddedSong -> AddedSongRow(
+                            index = index,
+                            size = screenState.songs.size,
+                            song = song
+                        )
+                    }
+
+                    if (index != 0) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
         }
@@ -160,51 +179,9 @@ fun CreateScreen(modifier: Modifier = Modifier, screenState: CreateScreenState) 
 
 @Composable
 fun AddedSongRow(modifier: Modifier = Modifier, size: Int, index: Int, song: Song.AddedSong) {
-    val borderColor = MaterialTheme.colorScheme.secondary
-    val border = remember(index) {
-        when (index) {
-            0 -> {
-                Modifier.topBorder(
-                    strokeWidth = 2.dp,
-                    color = borderColor,
-                    cornerRadiusDp = 8.dp
-                )
-            }
-
-            size - 1 -> {
-                Modifier.bottomBorder(
-                    strokeWidth = 2.dp,
-                    color = borderColor,
-                    cornerRadiusDp = 8.dp
-                )
-            }
-
-            else -> {
-                Modifier.sideBorder(
-                    strokeWidth = 2.dp,
-                    color = borderColor,
-                    cornerRadiusDp = 0.dp
-                )
-            }
-        }
-    }
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .then(border)
-            .clip(
-                shape = when (index) {
-                    0 -> RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
-                    size - 1 -> RoundedCornerShape(
-                        bottomStart = 8.dp,
-                        bottomEnd = 8.dp
-                    )
-
-                    else -> RectangleShape
-                }
-            )
-            .background(color = MaterialTheme.colorScheme.surfaceVariant)
             .padding(vertical = 4.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -216,24 +193,9 @@ fun AddedSongRow(modifier: Modifier = Modifier, size: Int, index: Int, song: Son
 
 @Composable
 fun AddSongRow(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    val borderColor = MaterialTheme.colorScheme.secondary
-    val border =
-        Modifier.bottomBorder(
-            strokeWidth = 2.dp,
-            color = borderColor,
-            cornerRadiusDp = 8.dp
-        )
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .then(border)
-            .clip(
-                shape = RoundedCornerShape(
-                    bottomStart = 8.dp,
-                    bottomEnd = 8.dp
-                )
-            )
-            .background(color = MaterialTheme.colorScheme.surfaceVariant)
             .clickable(onClick = onClick)
             .padding(vertical = 4.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
