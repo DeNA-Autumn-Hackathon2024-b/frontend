@@ -43,21 +43,45 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import com.dena.autum_hackathon_b.cassette.R
+import com.dena.autum_hackathon_b.cassette.entity.CachedAudioFile
 import com.dena.autum_hackathon_b.cassette.ui.theme.CassetteTheme
+import okhttp3.Cache
 
 @Composable
 fun CreateScreenHost(
     modifier: Modifier = Modifier,
+    navController: NavController,
     screenViewModel: CreateScreenViewModel = hiltViewModel(),
-    navigateBack: () -> Unit
+    navigateToAddSongDialog: () -> Unit,
+    navigateBack: () -> Unit,
 ) {
     val screenState = rememberCreateScreenState(screenViewModel)
 
-    LaunchedEffect(screenViewModel) {
+    LaunchedEffect(Unit) {
+        navController.currentBackStackEntry?.run {
+            if (savedStateHandle.contains("cachedAudioFile") && savedStateHandle.contains("songText")) { // 結果があるか確認
+                // 結果取得
+                val cachedAudioFile: CachedAudioFile? = savedStateHandle["cachedAudioFile"]
+                val songText: String? = savedStateHandle["songText"]
+                // 結果を使った処理
+                if (cachedAudioFile != null && songText != null) {
+                    screenViewModel.registerSong(cachedAudioFile, songText)
+                }
+                // 結果を削除
+                savedStateHandle.remove<CachedAudioFile>("result")
+            }
+        }
     }
 
-    CreateScreen(modifier = modifier, screenState = screenState, onClickBack = navigateBack)
+    CreateScreen(
+        modifier = modifier,
+        screenState = screenState,
+        onClickAddSong = navigateToAddSongDialog,
+        onClickBack = navigateBack
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,6 +89,7 @@ fun CreateScreenHost(
 fun CreateScreen(
     modifier: Modifier = Modifier,
     screenState: CreateScreenState,
+    onClickAddSong: () -> Unit,
     onClickBack: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -146,12 +171,8 @@ fun CreateScreen(
                         .background(color = MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     when (song) {
-                        Song.AddSong -> AddSongRow(onClick = {})
-                        is Song.AddedSong -> AddedSongRow(
-                            index = index,
-                            size = screenState.songs.size,
-                            song = song
-                        )
+                        Song.AddSong -> AddSongRow(onClick = onClickAddSong)
+                        is Song.AddedSong -> AddedSongRow(song = song)
                     }
 
                     if (index != 0) {
@@ -167,7 +188,7 @@ fun CreateScreen(
 }
 
 @Composable
-fun AddedSongRow(modifier: Modifier = Modifier, size: Int, index: Int, song: Song.AddedSong) {
+fun AddedSongRow(modifier: Modifier = Modifier, song: Song.AddedSong) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -208,6 +229,9 @@ private fun PreviewCreateScreen() {
     }
 
     CassetteTheme {
-        CreateScreen(screenState = CreateScreenState(screenState), onClickBack = {})
+        CreateScreen(
+            screenState = CreateScreenState(screenState),
+            onClickAddSong = {},
+            onClickBack = {})
     }
 }

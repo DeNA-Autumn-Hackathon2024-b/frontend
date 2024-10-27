@@ -8,6 +8,8 @@ import timber.log.Timber
 class CassetteApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        Timber.plant()
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 }
