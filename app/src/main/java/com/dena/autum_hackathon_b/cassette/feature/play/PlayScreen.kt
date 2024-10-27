@@ -130,15 +130,15 @@ fun PlayScreen(
                 screenState = screenState,
             )
 
-            Text(
-                text = "time",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.2f)
-                    .padding(top = 20.dp),
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center,
-            )
+//            Text(
+//                text = "time",
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .weight(0.2f)
+//                    .padding(top = 20.dp),
+//                fontSize = 20.sp,
+//                textAlign = TextAlign.Center,
+//            )
 
             Row(
                 modifier = Modifier
