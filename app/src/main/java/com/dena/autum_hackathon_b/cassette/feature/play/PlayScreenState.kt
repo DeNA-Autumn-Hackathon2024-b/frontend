@@ -18,6 +18,7 @@ import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.source.MediaSource
 import android.content.Context
 import androidx.annotation.OptIn
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 
@@ -88,11 +89,27 @@ class PlayScreenState
 
     init {
         if (songs.isNotEmpty()) {
-            val mediaItems = songs.map { song ->
+            val mediaItems = songs.filterIsInstance<Song.AddedSong>().map { song ->
                 MediaItem.fromUri(Uri.parse(song.audioFileUrl))
             }
             exoPlayer.setMediaItems(mediaItems)
             exoPlayer.prepare()
+
+            exoPlayer.addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(state: Int) {
+                    when (state) {
+                        Player.STATE_READY -> {
+                            println("ExoPlayer is ready and seekable: ${exoPlayer.isCurrentWindowSeekable}")
+                        }
+                        Player.STATE_BUFFERING -> {
+                            println("ExoPlayer is buffering")
+                        }
+                        Player.STATE_ENDED -> {
+                            println("Playback ended")
+                        }
+                    }
+                }
+            })
         }
     }
 }
