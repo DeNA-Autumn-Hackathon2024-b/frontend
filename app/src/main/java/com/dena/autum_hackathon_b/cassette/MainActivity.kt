@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
             CassetteTheme {
                 NavHost(navController = navController, startDestination = "play") {
                     composable(route = "play") {
-                        PlayScreenHost(
+                       PlayScreenHost(
                             navigateToCreateScreen = {
                                 navController.navigate("create")
                             }

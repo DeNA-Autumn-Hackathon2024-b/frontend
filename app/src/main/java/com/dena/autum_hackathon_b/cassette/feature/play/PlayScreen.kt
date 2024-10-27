@@ -33,6 +33,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dena.autum_hackathon_b.cassette.R
 import androidx.media3.exoplayer.ExoPlayer
+import com.dena.autum_hackathon_b.cassette.feature.create.CreateScreenState
+import com.dena.autum_hackathon_b.cassette.feature.create.CreateScreenViewModel
+import com.dena.autum_hackathon_b.cassette.feature.create.Song
+import com.dena.autum_hackathon_b.cassette.feature.create.rememberCreateScreenState
 import com.dena.autum_hackathon_b.cassette.feature.play.flipping.FlippingCassetteImage
 import com.dena.autum_hackathon_b.cassette.ui.theme.CassetteTheme
 
@@ -101,7 +105,8 @@ fun PlayScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(top = 16.dp, bottom = 30.dp)
+                    .padding(top = 16.dp, bottom = 30.dp),
+                screenState = screenState,
             )
 
             Text(
@@ -162,7 +167,6 @@ private fun PreviewPlayScreen() {
     val exoPlayer = remember(context) {
         ExoPlayer.Builder(context).build()
     }
-
     CassetteTheme {
         PlayScreen(screenState = PlayScreenState(screenState, exoPlayer), onClickAddButton = {})
     }
