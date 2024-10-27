@@ -51,12 +51,12 @@ class PlayScreenState
             Song.AddedSong(
                 duration = "0:30",
                 name = "希望の光",
-                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/original.mp3"
+                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/4ead1714-a222-491e-bd73-c771481f7585/original.mp3"
             ),
             Song.AddedSong(
                 duration = "1:30",
                 name = "星降る夜のメロディ",
-                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/original.mp3"
+                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/9493b5d5-80a2-43ca-8755-1614764e6bd1/original.mp3"
             ),
         )
 
@@ -84,15 +84,14 @@ class PlayScreenState
         return HlsMediaSource.Factory(dataSourceFactory)
             .createMediaSource(MediaItem.fromUri(Uri.parse(url)))
     }
-
      */
-
 
     init {
         if (songs.isNotEmpty()) {
-            val firstSong = songs[0] as Song.AddedSong
-            val mediaSource = buildMediaSource(firstSong.audioFileUrl)
-            exoPlayer.setMediaSource(mediaSource)
+            val mediaItems = songs.map { song ->
+                MediaItem.fromUri(Uri.parse(song.audioFileUrl))
+            }
+            exoPlayer.setMediaItems(mediaItems)
             exoPlayer.prepare()
         }
     }

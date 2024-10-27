@@ -40,10 +40,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.MediaItem
 import com.dena.autum_hackathon_b.cassette.R
 import androidx.media3.exoplayer.ExoPlayer
-import com.dena.autum_hackathon_b.cassette.feature.create.CreateScreenState
-import com.dena.autum_hackathon_b.cassette.feature.create.CreateScreenViewModel
-import com.dena.autum_hackathon_b.cassette.feature.create.Song
-import com.dena.autum_hackathon_b.cassette.feature.create.rememberCreateScreenState
 import com.dena.autum_hackathon_b.cassette.feature.play.flipping.FlippingCassetteImage
 import com.dena.autum_hackathon_b.cassette.ui.theme.CassetteTheme
 import kotlinx.coroutines.isActive
@@ -255,7 +251,13 @@ private fun PreviewPlayScreen() {
     val context = LocalContext.current
     val exoPlayer = remember(context) {
         ExoPlayer.Builder(context).build().apply {
-            setMediaItem(MediaItem.fromUri("https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/original.mp3"))
+            // 複数の曲をセット
+            val mediaItems = listOf(
+                MediaItem.fromUri("https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/song1.mp3"),
+                MediaItem.fromUri("https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/song2.mp3"),
+                MediaItem.fromUri("https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/song3.mp3")
+            )
+            setMediaItems(mediaItems)
             prepare()
         }
     }
