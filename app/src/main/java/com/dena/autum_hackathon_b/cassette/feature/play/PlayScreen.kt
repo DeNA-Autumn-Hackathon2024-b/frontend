@@ -255,7 +255,7 @@ private fun PreviewPlayScreen() {
     val context = LocalContext.current
     val exoPlayer = remember(context) {
         ExoPlayer.Builder(context).build().apply {
-            setMediaItem(MediaItem.fromUri("https://example.com/song1.m3u8"))
+            setMediaItem(MediaItem.fromUri("https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/original.mp3"))
             prepare()
         }
     }

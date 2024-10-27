@@ -19,6 +19,7 @@ import androidx.media3.exoplayer.source.MediaSource
 import android.content.Context
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
 
 sealed interface Song {
     data class AddedSong(
@@ -44,24 +45,36 @@ class PlayScreenState
             // TODO: サーバーから取ってきたカセットの情報（UiState）をここで表示
             Song.AddedSong(
                 duration = "0:00",
-                name = "ウタ1",
-                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/d4fa044f-4457-4c69-85ea-371242c5d20a/d4fa044f[…]d20ad4fa044f-4457-4c69-85ea-371242c5d20a.m3u8"
+                name = "風のささやき",
+                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/original.mp3"
             ),
             Song.AddedSong(
                 duration = "0:30",
-                name = "ウタ2",
-                audioFileUrl = "https://example.com/song2.m3u8"
+                name = "希望の光",
+                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/original.mp3"
             ),
             Song.AddedSong(
                 duration = "1:30",
-                name = "ウタ3",
-                audioFileUrl = "https://example.com/song3.m3u8"
+                name = "星降る夜のメロディ",
+                audioFileUrl = "https://cassette-songs.s3.ap-southeast-2.amazonaws.com/ab814f2c-93b0-41f2-83f9-29dddf5038ee/original.mp3"
             ),
         )
 
     val totalDuration: String
         get() = "10:00"
 
+    //MP3
+    private fun buildMediaSource(url: String): MediaSource {
+        val dataSourceFactory = DefaultDataSourceFactory(
+            context,
+            Util.getUserAgent(context, "cassette-app")
+        )
+        return ProgressiveMediaSource.Factory(dataSourceFactory)
+            .createMediaSource(MediaItem.fromUri(Uri.parse(url)))
+    }
+
+   //HLS
+    /*
     @OptIn(UnstableApi::class)
     private fun buildMediaSource(url: String): MediaSource {
         val dataSourceFactory = DefaultDataSourceFactory(
@@ -71,6 +84,9 @@ class PlayScreenState
         return HlsMediaSource.Factory(dataSourceFactory)
             .createMediaSource(MediaItem.fromUri(Uri.parse(url)))
     }
+
+     */
+
 
     init {
         if (songs.isNotEmpty()) {
